@@ -1,7 +1,9 @@
 import { TrendingUp, TrendingDown, BarChart3, Shield, DollarSign } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface FundCardProps {
+  id: string;
   name: string;
   ticker: string;
   type: string;
@@ -15,6 +17,7 @@ interface FundCardProps {
 }
 
 const FundCard = ({
+  id,
   name,
   ticker,
   type,
@@ -42,9 +45,10 @@ const FundCard = ({
   };
 
   return (
-    <div
+    <Link
+      to={`/fund/${id}`}
       className={cn(
-        "glass-card p-6 hover:border-primary/30 transition-all duration-300 group cursor-pointer",
+        "glass-card p-6 hover:border-primary/30 transition-all duration-300 group cursor-pointer block",
         className
       )}
       style={style}
@@ -130,7 +134,7 @@ const FundCard = ({
           <p className="text-sm text-foreground truncate">{manager}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

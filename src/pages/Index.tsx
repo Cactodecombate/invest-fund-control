@@ -96,6 +96,7 @@ const Index = () => {
             {mockFunds.map((fund, index) => (
               <FundCard
                 key={fund.id}
+                id={fund.id}
                 name={fund.name}
                 ticker={fund.ticker}
                 type={fund.type}
