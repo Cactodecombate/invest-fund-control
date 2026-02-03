@@ -6,13 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/Header";
 import AmortizacoesTable from "@/components/AmortizacoesTable";
 import IntegralizacoesTable from "@/components/IntegralizacoesTable";
-import CotaInicialCard from "@/components/CotaInicialCard";
+import RCICard from "@/components/RCICard";
 import AGQTable from "@/components/AGQTable";
 import { mockFunds } from "@/data/mockFunds";
 import {
   mockAmortizacoes,
   mockIntegralizacoes,
-  mockCotaInicial,
+  mockRCIs,
   mockAGQs,
 } from "@/data/mockFundDetails";
 import { cn } from "@/lib/utils";
@@ -124,16 +124,16 @@ const FundDetails = () => {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="ci" className="space-y-6">
+        <Tabs defaultValue="rci" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
-            <TabsTrigger value="ci">CI</TabsTrigger>
+            <TabsTrigger value="rci">RCI</TabsTrigger>
             <TabsTrigger value="amortizacoes">Amortizações</TabsTrigger>
             <TabsTrigger value="integralizacoes">Integralizações</TabsTrigger>
             <TabsTrigger value="agq">AGQ</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="ci" className="animate-fade-in">
-            <CotaInicialCard cotaInicial={mockCotaInicial} />
+          <TabsContent value="rci" className="animate-fade-in">
+            <RCICard rcis={mockRCIs} />
           </TabsContent>
 
           <TabsContent value="amortizacoes" className="animate-fade-in">
