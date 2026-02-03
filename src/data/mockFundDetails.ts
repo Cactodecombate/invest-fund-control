@@ -14,11 +14,12 @@ export interface Integralizacao {
   cotaValor: number;
 }
 
-export interface CotaInicial {
-  dataInicio: string;
-  valorInicial: number;
-  cotaAtual: number;
-  variacao: number;
+export interface RCI {
+  id: string;
+  data: string;
+  pauta: string;
+  decisao: "Aprovado" | "Reprovado" | "Em análise";
+  observacoes: string;
 }
 
 export interface AGQ {
@@ -44,12 +45,12 @@ export const mockIntegralizacoes: Integralizacao[] = [
   { id: "4", data: "2024-02-01", valor: 500000, cotasAdquiridas: 445.12, cotaValor: 1.1233 },
 ];
 
-export const mockCotaInicial: CotaInicial = {
-  dataInicio: "2020-03-15",
-  valorInicial: 1.0000,
-  cotaAtual: 1.2567,
-  variacao: 25.67,
-};
+export const mockRCIs: RCI[] = [
+  { id: "1", data: "2024-12-10", pauta: "Aporte em CRI logístico", decisao: "Aprovado", observacoes: "Retorno esperado de 14% a.a." },
+  { id: "2", data: "2024-11-05", pauta: "Desinvestimento em FII ABC", decisao: "Aprovado", observacoes: "Realização de lucro após valorização" },
+  { id: "3", data: "2024-09-20", pauta: "Novo investimento em debêntures", decisao: "Em análise", observacoes: "Aguardando due diligence" },
+  { id: "4", data: "2024-08-15", pauta: "Aquisição de cotas FII XYZ", decisao: "Reprovado", observacoes: "Risco elevado para o perfil do fundo" },
+];
 
 export const mockAGQs: AGQ[] = [
   { id: "1", data: "2025-03-15", tipo: "Ordinária", pauta: "Aprovação de contas do exercício 2024", status: "Agendada", quorum: 0 },
