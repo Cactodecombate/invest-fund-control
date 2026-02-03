@@ -14,14 +14,14 @@ export interface Fund {
 export const mockFunds: Fund[] = [
   {
     id: "1",
-    name: "Verde AM Alocação FIC FIM",
-    ticker: "VERDE",
-    type: "Multimercado",
-    aum: 12500000000,
+    name: "INOVA EMPRESA FUNDO DE INVESTIMENTO EM PARTICIPAÇÕES MULTIESTRATEGIA",
+    ticker: "FIP Inova Empresa",
+    type: "Participações",
+    aum: 380000000,
     ytdReturn: 14.52,
     monthlyReturn: 1.23,
     risk: "Médio",
-    manager: "Verde Asset",
+    manager: "Angra Partners",
     minInvestment: 50000,
   },
   {
