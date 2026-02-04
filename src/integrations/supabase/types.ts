@@ -14,7 +14,221 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agq: {
+        Row: {
+          agenda: string
+          created_at: string
+          date: string
+          fund_id: string
+          id: string
+          quorum: number
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          agenda: string
+          created_at?: string
+          date: string
+          fund_id: string
+          id?: string
+          quorum?: number
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          agenda?: string
+          created_at?: string
+          date?: string
+          fund_id?: string
+          id?: string
+          quorum?: number
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agq_fund_id_fkey"
+            columns: ["fund_id"]
+            isOneToOne: false
+            referencedRelation: "funds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      amortizations: {
+        Row: {
+          amount: number
+          created_at: string
+          date: string
+          fund_id: string
+          id: string
+          pl_percentage: number
+          quota_reference: number
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          date: string
+          fund_id: string
+          id?: string
+          pl_percentage?: number
+          quota_reference?: number
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          date?: string
+          fund_id?: string
+          id?: string
+          pl_percentage?: number
+          quota_reference?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "amortizations_fund_id_fkey"
+            columns: ["fund_id"]
+            isOneToOne: false
+            referencedRelation: "funds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funds: {
+        Row: {
+          aum: number
+          created_at: string
+          description: string | null
+          id: string
+          manager: string
+          min_investment: number
+          monthly_return: number
+          name: string
+          risk: string
+          ticker: string
+          type: string
+          updated_at: string
+          ytd_return: number
+        }
+        Insert: {
+          aum?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          manager: string
+          min_investment?: number
+          monthly_return?: number
+          name: string
+          risk?: string
+          ticker: string
+          type: string
+          updated_at?: string
+          ytd_return?: number
+        }
+        Update: {
+          aum?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          manager?: string
+          min_investment?: number
+          monthly_return?: number
+          name?: string
+          risk?: string
+          ticker?: string
+          type?: string
+          updated_at?: string
+          ytd_return?: number
+        }
+        Relationships: []
+      }
+      integralizations: {
+        Row: {
+          amount: number
+          created_at: string
+          date: string
+          fund_id: string
+          id: string
+          quota_value: number
+          quotas_acquired: number
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          date: string
+          fund_id: string
+          id?: string
+          quota_value?: number
+          quotas_acquired?: number
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          date?: string
+          fund_id?: string
+          id?: string
+          quota_value?: number
+          quotas_acquired?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integralizations_fund_id_fkey"
+            columns: ["fund_id"]
+            isOneToOne: false
+            referencedRelation: "funds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rci: {
+        Row: {
+          agenda: string
+          created_at: string
+          date: string
+          decision: string
+          fund_id: string
+          id: string
+          observations: string | null
+          updated_at: string
+        }
+        Insert: {
+          agenda: string
+          created_at?: string
+          date: string
+          decision?: string
+          fund_id: string
+          id?: string
+          observations?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agenda?: string
+          created_at?: string
+          date?: string
+          decision?: string
+          fund_id?: string
+          id?: string
+          observations?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rci_fund_id_fkey"
+            columns: ["fund_id"]
+            isOneToOne: false
+            referencedRelation: "funds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
