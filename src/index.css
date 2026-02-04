@@ -4,28 +4,32 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
+
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    --background: 175 77.4436% 26.0784%;
+    --foreground: 0 0% 0%;
 
-    --card: 222 47% 8%;
+    --card: 0 0% 98.0392%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222 47% 10%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 160 84% 39%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 25 94.9791% 53.1373%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 25.098%;
+    --secondary-foreground: 0 0% 0%;
 
     --muted: 217 33% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted-foreground: 176 60.8247% 19.0196%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 210 40% 98.0392%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
