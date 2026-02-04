@@ -1,14 +1,49 @@
-import { Wallet, TrendingUp, PieChart, Award, LayoutGrid, List } from "lucide-react";
+import { Wallet, TrendingUp, PieChart, Award, LayoutGrid, List, Plus } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import StatsCard from "@/components/StatsCard";
 import FundCard from "@/components/FundCard";
 import FundsTable from "@/components/FundsTable";
 import { Button } from "@/components/ui/button";
+import { useFunds } from "@/hooks/useFunds";
 import { mockFunds, portfolioStats } from "@/data/mockFunds";
 
 const Index = () => {
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+  const { data: funds = [], isLoading } = useFunds();
+
+  // Combine database funds with mock funds for display
+  const allFunds = funds.length > 0 ? funds.map(f => ({
+    id: f.id,
+    name: f.name,
+    ticker: f.ticker,
+    type: f.type,
+    aum: Number(f.aum),
+    ytdReturn: Number(f.ytd_return),
+    monthlyReturn: Number(f.monthly_return),
+    risk: f.risk as "Baixo" | "Médio" | "Alto",
+    manager: f.manager,
+    minInvestment: Number(f.min_investment),
+  })) : mockFunds;
+
+  // Calculate stats from funds
+  const stats = {
+    totalAUM: allFunds.reduce((acc, f) => acc + f.aum, 0),
+    totalFunds: allFunds.length,
+    avgReturn: allFunds.length > 0 
+      ? allFunds.reduce((acc, f) => acc + f.ytdReturn, 0) / allFunds.length 
+      : 0,
+    topPerformer: allFunds.length > 0 
+      ? allFunds.reduce((max, f) => f.ytdReturn > max.ytdReturn ? f : max, allFunds[0])
+      : null,
+  };
+
+  const formatAUM = (value: number) => {
+    if (value >= 1e9) return `R$ ${(value / 1e9).toFixed(1)}B`;
+    if (value >= 1e6) return `R$ ${(value / 1e6).toFixed(1)}M`;
+    return `R$ ${value.toLocaleString("pt-BR")}`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -16,20 +51,28 @@ const Index = () => {
 
       <main className="container py-8">
         {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Controle de Fundos
-          </h1>
-          <p className="text-muted-foreground">
-            Acompanhe e gerencie seus fundos de investimento em um só lugar.
-          </p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Controle de Fundos
+            </h1>
+            <p className="text-muted-foreground">
+              Acompanhe e gerencie seus fundos de investimento em um só lugar.
+            </p>
+          </div>
+          <Link to="/fund/add">
+            <Button className="gap-2">
+              <Plus className="w-4 h-4" />
+              Novo Fundo
+            </Button>
+          </Link>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatsCard
             title="Patrimônio Total"
-            value={portfolioStats.totalAUM}
+            value={formatAUM(stats.totalAUM)}
             change="+8.3% vs mês anterior"
             changeType="positive"
             icon={Wallet}
@@ -38,8 +81,8 @@ const Index = () => {
           />
           <StatsCard
             title="Fundos Ativos"
-            value={portfolioStats.totalFunds}
-            change="2 novos este mês"
+            value={String(stats.totalFunds)}
+            change={funds.length > 0 ? "Dados do banco" : "Dados mock"}
             changeType="neutral"
             icon={PieChart}
             className="animate-fade-in opacity-0"
@@ -47,7 +90,7 @@ const Index = () => {
           />
           <StatsCard
             title="Rentabilidade Média"
-            value={portfolioStats.avgReturn}
+            value={`${stats.avgReturn >= 0 ? "+" : ""}${stats.avgReturn.toFixed(1)}%`}
             change="Acima do CDI"
             changeType="positive"
             icon={TrendingUp}
@@ -56,8 +99,8 @@ const Index = () => {
           />
           <StatsCard
             title="Melhor Performance"
-            value={portfolioStats.topPerformer}
-            change="+22.45% no ano"
+            value={stats.topPerformer?.ticker || "-"}
+            change={stats.topPerformer ? `+${stats.topPerformer.ytdReturn.toFixed(2)}% no ano` : "-"}
             changeType="positive"
             icon={Award}
             className="animate-fade-in opacity-0"
@@ -90,10 +133,17 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="text-center py-12 text-muted-foreground">
+            Carregando fundos...
+          </div>
+        )}
+
         {/* Funds Display */}
-        {viewMode === "grid" ? (
+        {!isLoading && viewMode === "grid" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {mockFunds.map((fund, index) => (
+            {allFunds.map((fund, index) => (
               <FundCard
                 key={fund.id}
                 id={fund.id}
@@ -113,8 +163,22 @@ const Index = () => {
               />
             ))}
           </div>
-        ) : (
-          <FundsTable funds={mockFunds} />
+        )}
+        {!isLoading && viewMode === "table" && (
+          <FundsTable funds={allFunds} />
+        )}
+
+        {/* Empty State */}
+        {!isLoading && allFunds.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground mb-4">Nenhum fundo cadastrado ainda.</p>
+            <Link to="/fund/add">
+              <Button className="gap-2">
+                <Plus className="w-4 h-4" />
+                Adicionar primeiro fundo
+              </Button>
+            </Link>
+          </div>
         )}
       </main>
     </div>

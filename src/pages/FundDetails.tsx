@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, BarChart3, Shield, DollarSign, TrendingUp } from "lucide-react";
+import { ArrowLeft, DollarSign, TrendingUp, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +8,8 @@ import AmortizacoesTable from "@/components/AmortizacoesTable";
 import IntegralizacoesTable from "@/components/IntegralizacoesTable";
 import RCICard from "@/components/RCICard";
 import AGQTable from "@/components/AGQTable";
+import { useFund } from "@/hooks/useFunds";
+import { useAmortizations, useIntegralizations, useRCIs, useAGQs } from "@/hooks/useFundDetails";
 import { mockFunds } from "@/data/mockFunds";
 import {
   mockAmortizacoes,
@@ -19,7 +21,89 @@ import { cn } from "@/lib/utils";
 
 const FundDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const fund = mockFunds.find((f) => f.id === id);
+  
+  // Try to get fund from database first
+  const { data: dbFund, isLoading: isFundLoading } = useFund(id || "");
+  const { data: dbAmortizations = [] } = useAmortizations(id || "");
+  const { data: dbIntegralizations = [] } = useIntegralizations(id || "");
+  const { data: dbRCIs = [] } = useRCIs(id || "");
+  const { data: dbAGQs = [] } = useAGQs(id || "");
+
+  // Fallback to mock data if not found in database
+  const mockFund = mockFunds.find((f) => f.id === id);
+  
+  // Determine which fund data to use
+  const fund = dbFund ? {
+    id: dbFund.id,
+    name: dbFund.name,
+    ticker: dbFund.ticker,
+    type: dbFund.type,
+    aum: Number(dbFund.aum),
+    ytdReturn: Number(dbFund.ytd_return),
+    monthlyReturn: Number(dbFund.monthly_return),
+    risk: dbFund.risk as "Baixo" | "Médio" | "Alto",
+    manager: dbFund.manager,
+    minInvestment: Number(dbFund.min_investment),
+    description: dbFund.description || null,
+  } : mockFund ? {
+    ...mockFund,
+    description: null as string | null,
+  } : null;
+
+  // Transform database data to component format
+  const amortizacoes = dbAmortizations.length > 0 
+    ? dbAmortizations.map(a => ({
+        id: a.id,
+        data: a.date,
+        valor: Number(a.amount),
+        cotaReferencia: Number(a.quota_reference),
+        percentualPL: Number(a.pl_percentage),
+      }))
+    : mockAmortizacoes;
+
+  const integralizacoes = dbIntegralizations.length > 0
+    ? dbIntegralizations.map(i => ({
+        id: i.id,
+        data: i.date,
+        valor: Number(i.amount),
+        cotasAdquiridas: Number(i.quotas_acquired),
+        cotaValor: Number(i.quota_value),
+      }))
+    : mockIntegralizacoes;
+
+  const rcis = dbRCIs.length > 0
+    ? dbRCIs.map(r => ({
+        id: r.id,
+        data: r.date,
+        pauta: r.agenda,
+        decisao: r.decision as "Aprovado" | "Reprovado" | "Em análise",
+        observacoes: r.observations || "",
+      }))
+    : mockRCIs;
+
+  const agqs = dbAGQs.length > 0
+    ? dbAGQs.map(a => ({
+        id: a.id,
+        data: a.date,
+        tipo: a.type as "Ordinária" | "Extraordinária",
+        pauta: a.agenda,
+        status: a.status as "Realizada" | "Agendada" | "Cancelada",
+        quorum: Number(a.quorum),
+      }))
+    : mockAGQs;
+
+  if (isFundLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container py-8">
+          <div className="text-center text-muted-foreground">
+            Carregando...
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   if (!fund) {
     return (
@@ -79,6 +163,9 @@ const FundDetails = () => {
               </div>
               <h1 className="text-2xl font-bold text-foreground mb-1">{fund.name}</h1>
               <p className="text-muted-foreground">Gestor: {fund.manager}</p>
+              {fund.description && (
+                <p className="text-sm text-muted-foreground mt-2">{fund.description}</p>
+              )}
             </div>
 
             <div className="flex flex-wrap gap-6">
@@ -133,19 +220,19 @@ const FundDetails = () => {
           </TabsList>
 
           <TabsContent value="rci" className="animate-fade-in">
-            <RCICard rcis={mockRCIs} />
+            <RCICard rcis={rcis} />
           </TabsContent>
 
           <TabsContent value="amortizacoes" className="animate-fade-in">
-            <AmortizacoesTable amortizacoes={mockAmortizacoes} />
+            <AmortizacoesTable amortizacoes={amortizacoes} />
           </TabsContent>
 
           <TabsContent value="integralizacoes" className="animate-fade-in">
-            <IntegralizacoesTable integralizacoes={mockIntegralizacoes} />
+            <IntegralizacoesTable integralizacoes={integralizacoes} />
           </TabsContent>
 
           <TabsContent value="agq" className="animate-fade-in">
-            <AGQTable agqs={mockAGQs} />
+            <AGQTable agqs={agqs} />
           </TabsContent>
         </Tabs>
       </main>
