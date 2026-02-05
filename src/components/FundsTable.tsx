@@ -1,4 +1,5 @@
-import { TrendingUp, TrendingDown, MoreHorizontal } from "lucide-react";
+import { TrendingUp, TrendingDown, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -8,7 +9,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
+import { useUserRole } from "@/hooks/useUserRole";
+import { useDeleteFund } from "@/hooks/useFunds";
 
 interface Fund {
   id: string;
@@ -28,6 +48,8 @@ interface FundsTableProps {
 }
 
 const FundsTable = ({ funds }: FundsTableProps) => {
+  const { canEdit, canDelete } = useUserRole();
+  const deleteFund = useDeleteFund();
   const riskColors = {
     Baixo: "text-success bg-success/10",
     Médio: "text-warning bg-warning/10",
@@ -136,9 +158,58 @@ const FundsTable = ({ funds }: FundsTableProps) => {
                   </span>
                 </TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link to={`/fund/${fund.id}`} className="cursor-pointer">
+                          Ver detalhes
+                        </Link>
+                      </DropdownMenuItem>
+                      {canEdit && (
+                        <DropdownMenuItem asChild>
+                          <Link to={`/fund/${fund.id}/edit`} className="cursor-pointer">
+                            <Pencil className="w-4 h-4 mr-2" />
+                            Editar
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      {canDelete && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem
+                              className="text-destructive cursor-pointer"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Excluir
+                            </DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Excluir fundo</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Tem certeza que deseja excluir o fundo "{fund.name}"? Esta ação não pode ser desfeita.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteFund.mutate(fund.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Excluir
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             );
