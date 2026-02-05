@@ -5,7 +5,7 @@ CREATE TYPE public.app_role AS ENUM ('gerente', 'analista');
 CREATE TABLE public.user_roles (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-    role app_role NOT NULL DEFAULT 'analista',
+    role app_role NOT NULL DEFAULT 'gerente',
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     UNIQUE (user_id, role)
 );
