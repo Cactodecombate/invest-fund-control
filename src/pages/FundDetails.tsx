@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, DollarSign, TrendingUp, Shield } from "lucide-react";
+import { ArrowLeft, DollarSign, TrendingUp, Shield, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,6 +10,7 @@ import RCICard from "@/components/RCICard";
 import AGQTable from "@/components/AGQTable";
 import { useFund } from "@/hooks/useFunds";
 import { useAmortizations, useIntegralizations, useRCIs, useAGQs } from "@/hooks/useFundDetails";
+import { useUserRole } from "@/hooks/useUserRole";
 import { mockFunds } from "@/data/mockFunds";
 import {
   mockAmortizacoes,
@@ -20,7 +21,8 @@ import {
 import { cn } from "@/lib/utils";
 
 const FundDetails = () => {
-  const { id } = useParams<{ id: string }>();
+const { id } = useParams<{ id: string }>();
+  const { canEdit, role } = useUserRole();
   
   // Try to get fund from database first
   const { data: dbFund, isLoading: isFundLoading } = useFund(id || "");
@@ -160,11 +162,24 @@ const FundDetails = () => {
                   {fund.ticker}
                 </Badge>
                 <Badge variant="outline">{fund.type}</Badge>
+                {role && (
+                  <Badge variant="outline" className="capitalize">
+                    {role}
+                  </Badge>
+                )}
               </div>
               <h1 className="text-2xl font-bold text-foreground mb-1">{fund.name}</h1>
               <p className="text-muted-foreground">Gestor: {fund.manager}</p>
               {fund.description && (
                 <p className="text-sm text-muted-foreground mt-2">{fund.description}</p>
+              )}
+              {canEdit && (
+                <Link to={`/fund/${id}/edit`} className="mt-3 inline-block">
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Pencil className="w-4 h-4" />
+                    Editar Fundo
+                  </Button>
+                </Link>
               )}
             </div>
 

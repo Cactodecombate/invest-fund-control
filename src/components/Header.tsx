@@ -11,11 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
 
 const Header = () => {
-  const navigate = useNavigate();
+const navigate = useNavigate();
   const { user, profile, isAuthenticated, signOut, loading } = useAuthContext();
+  const { role, isGerente } = useUserRole();
 
   const handleSignOut = async () => {
     await signOut();
@@ -85,7 +88,14 @@ const Header = () => {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium">{profile?.full_name || "Usuário"}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">{profile?.full_name || "Usuário"}</p>
+                        {role && (
+                          <Badge variant={isGerente ? "default" : "secondary"} className="capitalize text-xs">
+                            {role}
+                          </Badge>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground">{user?.email}</p>
                     </div>
                   </DropdownMenuLabel>

@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import FundDetails from "./pages/FundDetails";
 import AddFund from "./pages/AddFund";
+import EditFund from "./pages/EditFund";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/fund/add" element={<AddFund />} />
             <Route path="/fund/:id" element={<FundDetails />} />
+            <Route path="/fund/:id/edit" element={<EditFund />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
