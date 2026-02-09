@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Header from "@/components/Header";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -120,7 +120,6 @@ const EditFund = () => {
   if (fundLoading || authLoading || roleLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <main className="container py-8">
           <div className="text-center text-muted-foreground">Carregando...</div>
         </main>
@@ -131,7 +130,6 @@ const EditFund = () => {
   if (!fund) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <main className="container py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-foreground mb-4">Fundo não encontrado</h1>
@@ -149,8 +147,6 @@ const EditFund = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-
       <main className="container py-8">
         <Link to={`/fund/${id}`}>
           <Button variant="ghost" className="mb-6 gap-2">

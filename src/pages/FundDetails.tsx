@@ -3,7 +3,7 @@ import { ArrowLeft, DollarSign, TrendingUp, Shield, Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Header from "@/components/Header";
+
 import AmortizacoesTable from "@/components/AmortizacoesTable";
 import IntegralizacoesTable from "@/components/IntegralizacoesTable";
 import RCICard from "@/components/RCICard";
@@ -97,7 +97,6 @@ const { id } = useParams<{ id: string }>();
   if (isFundLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <main className="container py-8">
           <div className="text-center text-muted-foreground">
             Carregando...
@@ -110,7 +109,6 @@ const { id } = useParams<{ id: string }>();
   if (!fund) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <main className="container py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-foreground mb-4">Fundo não encontrado</h1>
@@ -142,8 +140,6 @@ const { id } = useParams<{ id: string }>();
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-
       <main className="container py-8">
         {/* Back Button */}
         <Link to="/">
