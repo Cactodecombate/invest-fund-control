@@ -1,7 +1,6 @@
 import { Wallet, TrendingUp, PieChart, Award, LayoutGrid, List, Plus } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "@/components/Header";
 import StatsCard from "@/components/StatsCard";
 import FundCard from "@/components/FundCard";
 import FundsTable from "@/components/FundsTable";
@@ -47,8 +46,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-
       <main className="container py-8">
         {/* Page Title */}
         <div className="flex items-center justify-between mb-8">

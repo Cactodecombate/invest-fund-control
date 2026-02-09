@@ -4,7 +4,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { useUserRole, AppRole } from "@/hooks/useUserRole";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import Header from "@/components/Header";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -88,7 +88,6 @@ const UserManagement = () => {
   if (loading || roleLoading || usersLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <div className="container py-8 flex justify-center">
           <p className="text-muted-foreground">Carregando...</p>
         </div>
@@ -98,7 +97,6 @@ const UserManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <div className="container py-8 max-w-4xl">
         <Button variant="ghost" onClick={() => navigate("/")} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
