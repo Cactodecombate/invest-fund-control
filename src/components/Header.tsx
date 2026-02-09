@@ -100,6 +100,12 @@ const navigate = useNavigate();
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {isGerente && (
+                    <DropdownMenuItem onClick={() => navigate("/users")} className="cursor-pointer">
+                      <User className="w-4 h-4 mr-2" />
+                      Gerenciar Usuários
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={handleSignOut} className="text-destructive cursor-pointer">
                     <LogOut className="w-4 h-4 mr-2" />
                     Sair

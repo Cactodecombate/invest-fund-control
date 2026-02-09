@@ -9,6 +9,7 @@ import FundDetails from "./pages/FundDetails";
 import AddFund from "./pages/AddFund";
 import EditFund from "./pages/EditFund";
 import Auth from "./pages/Auth";
+import UserManagement from "./pages/UserManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/fund/add" element={<AddFund />} />
             <Route path="/fund/:id" element={<FundDetails />} />
             <Route path="/fund/:id/edit" element={<EditFund />} />
+            <Route path="/users" element={<UserManagement />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
