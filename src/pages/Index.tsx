@@ -1,4 +1,4 @@
-import { Wallet, TrendingUp, PieChart, Award, LayoutGrid, List, Plus } from "lucide-react";
+import { Wallet, TrendingUp, PieChart, Award, LayoutGrid, List, Plus, LogIn } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import StatsCard from "@/components/StatsCard";
@@ -57,12 +57,20 @@ const Index = () => {
               Acompanhe e gerencie seus fundos de investimento em um só lugar.
             </p>
           </div>
-          <Link to="/fund/add">
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              Novo Fundo
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link to="/auth">
+              <Button variant="outline" className="gap-2">
+                <LogIn className="w-4 h-4" />
+                Cadastrar
+              </Button>
+            </Link>
+            <Link to="/fund/add">
+              <Button className="gap-2">
+                <Plus className="w-4 h-4" />
+                Novo Fundo
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Stats Grid */}
